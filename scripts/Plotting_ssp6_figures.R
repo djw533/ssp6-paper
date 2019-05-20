@@ -7,7 +7,7 @@ library(ggtree)
 library(gggenes)
 library(Biostrings)
 library(grid)
-library(gridExtra) 
+library(gridExtra)
 library(dendextend)
 
 #### create groups of colours
@@ -57,18 +57,18 @@ cols <- c("Yersinia" = "#4F2F4F",
           "Buttiauxella" = "#8E6B23",
           "Metakosakonia" = "#007FFF",
           "Undibacterium" = "#00FF7F",
-          "TssA" = "#3cb44b", 
-          "TssB" = "#ffe119", 
-          "TssC" = "#e6194b", 
+          "TssA" = "#3cb44b",
+          "TssB" = "#ffe119",
+          "TssC" = "#e6194b",
           "TssD" = "#4363d8",
-          "TssE" = "#ff1493", 
-          "TssF" = "#911eb4", 
-          "TssG" = "#46f0f0", 
+          "TssE" = "#ff1493",
+          "TssF" = "#911eb4",
+          "TssG" = "#46f0f0",
           "TssH" = "#f032e6",
           "TssI" = "#bcf60c",
-          "TssJ" = "#fabebe", 
-          "TssK" = "#008080", 
-          "TssL" = "#e6beff", 
+          "TssJ" = "#fabebe",
+          "TssK" = "#008080",
+          "TssL" = "#e6beff",
           "TssM" = "#9a6324",
           "DUF4150" = "#fffac8",
           "FHA" = "#800000",
@@ -80,19 +80,19 @@ cols <- c("Yersinia" = "#4F2F4F",
           "TagF_N" = "#808080",
           "TagF N" = "#808080",
           "X-unknown" = "#ffffff",
-          "Unknown" = "#ffffff", 
+          "Unknown" = "#ffffff",
           "ssp6" = "#f58231",
-          "1" = "#ffbfbf", 
-          "2" = "#ff9595", 
-          "3" = "#ff6a6a", 
+          "1" = "#ffbfbf",
+          "2" = "#ff9595",
+          "3" = "#ff6a6a",
           "4" = "#ff5555",
-          "5" = "#ff2b2b", 
+          "5" = "#ff2b2b",
           "6" = "#ff0000")
 
-####load in data 
-results <- read.csv(file = "results.csv", comment.char = "", header = F, stringsAsFactors = F, quote="")
-metadata <- read.csv(file="NCBI_complete_genomes_only_published_strains_metadata.csv", comment.char = "", header = T, stringsAsFactors = F, quote="")
-lengths <- read.csv(file="lengths_formatted.csv",comment.char = "", header = F, stringsAsFactors = F, quote="")
+####load in data
+results <- read.csv(file = "../data/results.csv", comment.char = "", header = F, stringsAsFactors = F, quote="")
+metadata <- read.csv(file="../data/NCBI_complete_genomes_only_published_strains_metadata.csv", comment.char = "", header = T, stringsAsFactors = F, quote="")
+lengths <- read.csv(file="../data/lengths_formatted.csv",comment.char = "", header = F, stringsAsFactors = F, quote="")
 #metadata$Short.species <- str_replace_all(metadata$Short.species, " ", "_")
 metadata4later <- metadata
 metadata4later$File <- str_replace_all(metadata4later$File ,'.gbff', '')
@@ -123,7 +123,7 @@ ggplot(data = species, aes(x = reorder(Var1, -Freq), y= Freq,fill = Var1)) + geo
                             default.unit="inch")) +
   theme(legend.text = element_text(size=7),
         legend.title = element_text(size=8, face="bold"),
-        legend.justification=c(0,0), 
+        legend.justification=c(0,0),
         legend.position=c(0.45, 0.24),
         legend.background = element_blank(),
         legend.key = element_blank(),
@@ -195,14 +195,14 @@ write.table(files, col.names = F, row.names = F, quote = F, file = "filenames_wi
 
 ##########
 
-# ggplot(complete_2, aes(V7,V10)) + 
+# ggplot(complete_2, aes(V7,V10)) +
 #   geom_count() +
-#   theme_classic() 
+#   theme_classic()
 
 ggplot(data = complete_2, aes(V7,V10, colour = Short.species, alpha = 0.1)) +
   geom_count() +
   theme_classic() +
-  scale_color_manual(values=c(col_vector), name = "Species") + 
+  scale_color_manual(values=c(col_vector), name = "Species") +
   theme(text = element_text(size = 16)) +
   theme(legend.position = "none") +
   xlab("Complete sequence hmmer score") +
@@ -216,7 +216,7 @@ ggplot(data = complete_2, aes(V7,V10, colour = Short.species, alpha = 0.1)) +
 
 complete_2$file_prefix <- str_replace_all(files$File, ".gbff", "")
 
-T6SS_operons <- read.csv("strain_statistics.csv",comment.char = "", header = T, stringsAsFactors = F, quote="")
+T6SS_operons <- read.csv("../data/strain_statistics.csv",comment.char = "", header = T, stringsAsFactors = F, quote="")
 complete_with_T6SS <- merge(complete_2,T6SS_operons,by.x="file_prefix",by.y="strain")
 least_1_T6SS <- subset.data.frame(complete_with_T6SS, number_of_operons >= 1)
 no_T6SS <- subset.data.frame(complete_with_T6SS, number_of_operons == 0)
@@ -226,49 +226,49 @@ box_data <- data.frame(y=c(20,350), x=c(150,250))
 ### hmmer score without T6SS data:
 ggplot(data = least_1_T6SS, aes(V2.y,V7, colour = Short.species, alpha = 0.1)) +
   geom_count() +
-  #geom_count(data = no_T6SS, aes(V2.y,V7), colour=c("grey")) + 
+  #geom_count(data = no_T6SS, aes(V2.y,V7), colour=c("grey")) +
   theme_classic() +
-  scale_color_manual(values=c(col_vector), name = "Species") + 
+  scale_color_manual(values=c(col_vector), name = "Species") +
   theme(text = element_text(size = 16)) +
   guides(color=guide_legend(ncol =3,keywidth=0.1,
                             keyheight=0.1,
                             default.unit="inch")) +
   theme(legend.text = element_text(size=7),
         legend.title = element_text(size=8, face="bold"),
-        legend.justification=c(0,0), 
+        legend.justification=c(0,0),
         legend.position=c(0.45, 0.12),
         legend.background = element_blank(),
         legend.key = element_blank(),
-        legend.box.background = element_rect(colour = "black")) + 
+        legend.box.background = element_rect(colour = "black")) +
   xlim(0,650) +
   xlab("Length of hmmer hit (AAs)") +
   ylab("Hmmer score") +
   geom_text(aes(label=ifelse(V1 =="DB11",as.character("Db11"),'')),hjust=1.2,vjust=0,colour='black',alpha = NA) +
-  annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) + 
+  annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) +
   ggsave("hit_length_vs_hmmer_score_coloured.png", dpi=300, width=9,height=7, units=c("in"))
 
 ##hmmer score with T6SS data - shared as grey
 ggplot(data = least_1_T6SS, aes(V2.y,V7, colour = Short.species, alpha = 0.1)) +
   geom_count() +
-  geom_count(data = no_T6SS, aes(V2.y,V7), colour=c("grey")) + 
+  geom_count(data = no_T6SS, aes(V2.y,V7), colour=c("grey")) +
   theme_classic() +
-  scale_color_manual(values=c(col_vector), name = "Species") + 
+  scale_color_manual(values=c(col_vector), name = "Species") +
   theme(text = element_text(size = 16)) +
   guides(color=guide_legend(ncol =3,keywidth=0.1,
                             keyheight=0.1,
                             default.unit="inch")) +
   theme(legend.text = element_text(size=7),
         legend.title = element_text(size=8, face="bold"),
-        legend.justification=c(0,0), 
+        legend.justification=c(0,0),
         legend.position=c(0.45, 0.12),
         legend.background = element_blank(),
         legend.key = element_blank(),
-        legend.box.background = element_rect(colour = "black")) + 
+        legend.box.background = element_rect(colour = "black")) +
   xlim(0,650) +
   xlab("Length of hmmer hit (AAs)") +
   ylab("Hmmer score") +
   geom_text(aes(label=ifelse(V1 =="DB11",as.character("Db11"),'')),hjust=1.2,vjust=0,colour='black',alpha = NA) +
-  annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) + 
+  annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) +
   ggsave("hit_length_vs_hmmer_score_coloured_with_T6SS_in_grey.png", dpi=300,width=9,height=7, units=c("in"))
 
 ### output list of strains with hmmer score >= 20 and at least 1 T6SS:
@@ -297,7 +297,7 @@ write.csv(headers_for_itol,file="headers_for_itol.csv",quote = F,row.names = F)
 
 
 ### hamburger_stats:
-hamburger_data <- read.csv("~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/1_ssp6_hamburger_10k_up_and_down/operon_stats.csv",
+hamburger_data <- read.csv("../data/1_ssp6_hamburger_10k_up_and_down_operon_stats.csv",
          quote = "",
          comment.char = "",
          stringsAsFactors = F,
@@ -313,8 +313,8 @@ merged_for_hamburger$number_for_name <- as.data.frame(matrix(unlist(noquote(str_
 merged_for_hamburger$new_name<- with(merged_for_hamburger, paste0(Short.species, sep=" ", Strain, sep=" ", number_for_name))
 
 ### ssp6 hmmer score for each operon - data from hamburger step 5 on each 10k fragment:
-hmmer_step_5_ssp6_data <- read.csv("~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/ssp6-alignment/temp_hmmer_output.csv",header=T, quote = "", comment.char = "",stringsAsFactors = F)
-hmmer_ssp6_data_pre <-read.csv("~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/ssp6-alignment/temp_hmmer_output.csv", header=T, comment.char = "", stringsAsFactors = F, quote="")
+hmmer_step_5_ssp6_data <- read.csv("../data/5_hamburger_hmmer_scores.csv",header=T, quote = "", comment.char = "",stringsAsFactors = F)
+hmmer_ssp6_data_pre <-read.csv("../data/5_hamburger_hmmer_scores.csv", header=T, comment.char = "", stringsAsFactors = F, quote="")
 row.names(hmmer_ssp6_data_pre) <- hmmer_ssp6_data_pre$hmmer
 hmmer_ssp6_data <- subset.data.frame(hmmer_ssp6_data_pre, select=c("score"))
 colnames(hmmer_ssp6_data) <- "Hmmer score"
@@ -333,44 +333,44 @@ write.csv(supplementary,quote = F, row.names = F, file = "hmmer_score_supplement
 new_cols <- c(col_vector, cols)
 
 ###Hmmer Evalues vs hmmer score:
-ggplot(supplementary,aes(y = score,x = evalue, color = Short.species.y)) + geom_count() + 
+ggplot(supplementary,aes(y = score,x = evalue, color = Short.species.y)) + geom_count() +
   scale_color_manual(values=c(new_cols)) +
   guides(color=guide_legend(ncol =3,keywidth=0.1,
                             keyheight=0.1,
                             default.unit="inch")) +
   theme(legend.text = element_text(size=7),
         legend.title = element_text(size=8, face="bold"),
-        legend.justification=c(0,0), 
+        legend.justification=c(0,0),
         legend.position=c(0.35, 0.12),
         legend.background = element_blank(),
         legend.key = element_blank(),
-        legend.box.background = element_rect(colour = "black")) + 
+        legend.box.background = element_rect(colour = "black")) +
   ylab("Hmmer score") +
   xlab("Hmmer E value") +
   geom_text(aes(label=ifelse(Strain.y =="DB11",as.character("Db11"),'')),hjust=1.2,vjust=0,colour='black',alpha = NA) +
   geom_hline(yintercept=20, linetype="dashed", color = "red") +
 #  geom_vline(xintercept=0.05, linetype="dashed", color = "red") +
-  #annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) + 
+  #annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) +
   ggsave("Hmmer_score_vs_Evalue.png",dpi=300, width=9,height=7, units=c("in"))
 
-ggplot(supplementary,aes(y = score,x = log(evalue), color = Short.species.y)) + geom_count() + 
+ggplot(supplementary,aes(y = score,x = log(evalue), color = Short.species.y)) + geom_count() +
   scale_color_manual(values=c(new_cols)) +
   guides(color=guide_legend(ncol =3,keywidth=0.1,
                             keyheight=0.1,
                             default.unit="inch")) +
   theme(legend.text = element_text(size=7),
         legend.title = element_text(size=8, face="bold"),
-        legend.justification=c(0,0), 
+        legend.justification=c(0,0),
         legend.position="none",#c(0.35, 0.12),
         legend.background = element_blank(),
         legend.key = element_blank(),
-        legend.box.background = element_rect(colour = "black")) + 
+        legend.box.background = element_rect(colour = "black")) +
   ylab("Hmmer score") +
   xlab("Hmmer E value") +
   geom_text(aes(label=ifelse(Strain.y =="DB11",as.character("Db11"),'')),hjust=1.2,vjust=0,colour='black',alpha = NA) +
   geom_hline(yintercept=20, linetype="dashed", color = "red") +
   #  geom_vline(xintercept=0.05, linetype="dashed", color = "red") +
-  #annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) + 
+  #annotate("rect",xmin = 150, xmax = 250, ymin = 20, ymax = 350, alpha = 0.05, colour = "red", linetype = "dashed" ) +
   ggsave("Hmmer_score_vs_Evalue_log.png",dpi=300, width=9,height=7, units=c("in"))
 
   ## species for tree with genes:
@@ -383,8 +383,8 @@ row.names(ssp6_tree_data) <- merged_for_hamburger$operon_name
 hamburger_ssp6_tree <- read.tree(file="~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/ssp6-alignment/ssp6_sequences_aligned.fasta.treefile")
 tip_labels = data.frame(label=merged_for_hamburger$operon_name, label2 = merged_for_hamburger$new_name)
 t1 <- ggtree(hamburger_ssp6_tree)  %<+% tip_labels + geom_rootedge(0.2) + geom_text2(aes(subset = !isTip, label=label),size = 2, nudge_x = -0.04, nudge_y = 0.45) + geom_tiplab(aes(label=label2),size=2.8) #+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
-t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, colnames_offset_y = -1) + 
-  scale_fill_gradient(low="#ffffff", high="#2980B9") + 
+t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, colnames_offset_y = -1) +
+  scale_fill_gradient(low="#ffffff", high="#2980B9") +
   theme(legend.title=element_text()) +
   labs(fill="Hmmer score") +
   geom_treescale(width = 2, offset = -1.2) +
@@ -392,8 +392,8 @@ t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, co
 
 ### load in gggenes
 
-genes <- read.csv(file="~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/same_direction_gggenes_input.csv", header = T, comment.char = "", quote = "")
-genes2 <- read.csv(file="~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/master_GGgenes.csv", header = T, comment.char = "", quote = "")
+genes <- read.csv(file="../data/5_hamburger_same_direction_gggenes_input.csv", header = T, comment.char = "", quote = "")
+genes2 <- read.csv(file="~../data/5_hamburger_gggenes_input.csv", header = T, comment.char = "", quote = "")
 
 new_data <- genes[,c(2,1,3:7)]
 test_data <- genes2[,c(2,1,3:7)]
@@ -407,7 +407,7 @@ test_data <- genes2[,c(2,1,3:7)]
 t1_species <- ggtree(hamburger_ssp6_tree)  %<+% tip_labels + geom_rootedge(0.2) + geom_text2(aes(subset = !isTip, label=label),size = 2, nudge_x = -0.08, nudge_y = 0.45) + geom_tiplab(aes(label=label2),size=2.8) #+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
 t2 <- t1_species %>% gheatmap(ssp6_tree_data, color = NULL, offset = 2, width = 0.2, colnames_offset_y = -1) + scale_fill_manual(values=c(col_vector)) + theme(legend.position = "none")
 
-facet_plot(t2, panel='Operons', 
+facet_plot(t2, panel='Operons',
            mapping = aes(xmin = start, xmax = end, fill = gene, x=start, forward = direction, y=y),
            data=new_data, geom=geom_gene_arrow, arrow_body_height = grid::unit(1.5, "mm"), arrowhead_height = grid::unit(2, "mm"), arrowhead_width = grid::unit(2,"mm")) +
   scale_fill_manual(values=c(new_cols)) +
@@ -426,8 +426,8 @@ small_hamburger_ssp6_tree <- read.tree(file="~/Documents/201904-Apr/20190416-Fin
 t3 <- ggtree(small_hamburger_ssp6_tree)  %<+% tip_labels + geom_text2(aes(subset = !isTip, label=label),size = 3, nudge_x = -0.18, nudge_y = 0.15) + geom_tiplab(aes(label=label2),size=4,hjust=-0.02) + geom_rootedge(0.2)#+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
 t4 <- t3 %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) + scale_fill_manual(values=c(col_vector)) + theme(legend.position = "none")
 t4
-t9 <- t3 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 2, width = 0.2, colnames_offset_y = -1) + 
-  scale_fill_gradient(low="#ffffff", high="#2980B9") + 
+t9 <- t3 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 2, width = 0.2, colnames_offset_y = -1) +
+  scale_fill_gradient(low="#ffffff", high="#2980B9") +
   theme(legend.title=element_text()) +
   labs(fill="Hmmer score") +
   geom_treescale(width = 2, offset = -0.4) +
@@ -435,7 +435,7 @@ t9 <- t3 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 2, width = 0.2, co
 
 ### draw smaller set with genes alongside
 
-f1 <- facet_plot(t4, panel='Operons', 
+f1 <- facet_plot(t4, panel='Operons',
            mapping = aes(xmin = start, xmax = end, fill = gene, x=start, forward = direction, y=y),
            data=new_data, geom=geom_gene_arrow, arrow_body_height = grid::unit(3, "mm"), arrowhead_height = grid::unit(4, "mm"), arrowhead_width = grid::unit(2,"mm")) +
   scale_fill_manual(values=c(new_cols)) +
@@ -452,18 +452,18 @@ for_legend_plotting <- merge(operon_names,genes, by.x = "name", by.y = "operon")
 for_legend_plotting$gene <- str_replace_all(for_legend_plotting$gene, "_", " ")
 
 #plot species figure legend
-l2 <- t3 %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) + 
-  scale_fill_manual(values=c(col_vector),name = "Species") + 
+l2 <- t3 %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) +
+  scale_fill_manual(values=c(col_vector),name = "Species") +
   guides(fill=guide_legend(override.aes=list(colour=NA),ncol=1,keywidth=0.3,
                            keyheight=0.3,
                            title="Species",
                            default.unit="inch")) +
-  theme(legend.position = "right", 
+  theme(legend.position = "right",
         legend.text = element_text(face = "italic"),
-        legend.title = element_text(), 
+        legend.title = element_text(),
         legend.key = element_rect(size = 5),
-        legend.key.size = unit(1.5, 'lines')) 
-  
+        legend.key.size = unit(1.5, 'lines'))
+
 l2
 
 
@@ -471,16 +471,16 @@ l2
 ####species legend for bigger tree
 
 l3 <- t2 +
-  scale_fill_manual(values=c(col_vector),name = "Species") + 
+  scale_fill_manual(values=c(col_vector),name = "Species") +
   guides(fill=guide_legend(override.aes=list(colour=NA),ncol=2,keywidth=0.3,
                            keyheight=0.3,
                            title="Species",
                            default.unit="inch")) +
-  theme(legend.position = "right", 
-        legend.title = element_text(), 
+  theme(legend.position = "right",
+        legend.title = element_text(),
         legend.text = element_text(face = "italic"),
         legend.key = element_rect(size = 5),
-        legend.key.size = unit(1.5, 'lines')) 
+        legend.key.size = unit(1.5, 'lines'))
 l3
 
 
@@ -492,7 +492,7 @@ l1 <- ggplot(for_legend_plotting, aes(xmin = start, xmax = end, y = name, fill =
                            keyheight=0.3,
                            title = "Gene",
                            default.unit="inch")) +
-  theme(legend.position = "right", 
+  theme(legend.position = "right",
         legend.title = element_text("Gene")) +
   theme_genes()
 
@@ -509,5 +509,3 @@ ggdraw() +
    draw_plot(legend_3, x = .5, y = 0.25, width = .5, height = .5) +
    draw_plot(legend_4, x = -0.1, y = 0, width = .5, height = .5) +
   ggsave("legends.png",dpi=300, width=10,height=8, units=c("in"))
-
-
