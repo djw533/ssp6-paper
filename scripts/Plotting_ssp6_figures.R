@@ -380,7 +380,7 @@ row.names(ssp6_tree_data) <- merged_for_hamburger$operon_name
 
 ### sp6_tree from hamburger:
 
-hamburger_ssp6_tree <- read.tree(file="~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/ssp6-alignment/ssp6_sequences_aligned.fasta.treefile")
+hamburger_ssp6_tree <- read.tree(file="../data/5_hamburger_ssp6_hits.fasta.treefile")
 tip_labels = data.frame(label=merged_for_hamburger$operon_name, label2 = merged_for_hamburger$new_name)
 t1 <- ggtree(hamburger_ssp6_tree)  %<+% tip_labels + geom_rootedge(0.2) + geom_text2(aes(subset = !isTip, label=label),size = 2, nudge_x = -0.04, nudge_y = 0.45) + geom_tiplab(aes(label=label2),size=2.8) #+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
 t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, colnames_offset_y = -1) +
@@ -393,7 +393,7 @@ t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, co
 ### load in gggenes
 
 genes <- read.csv(file="../data/5_hamburger_same_direction_gggenes_input.csv", header = T, comment.char = "", quote = "")
-genes2 <- read.csv(file="~../data/5_hamburger_gggenes_input.csv", header = T, comment.char = "", quote = "")
+genes2 <- read.csv(file="../data/5_hamburger_gggenes_input.csv", header = T, comment.char = "", quote = "")
 
 new_data <- genes[,c(2,1,3:7)]
 test_data <- genes2[,c(2,1,3:7)]
@@ -422,7 +422,7 @@ ggplot2::ggplot(genes, ggplot2::aes(xmin = start, xmax = end,y = operon, fill = 
 
 ###select small number of isolates to look at
 ###load in tree of ssp6 from subset of isolates
-small_hamburger_ssp6_tree <- read.tree(file="~/Documents/201904-Apr/20190416-FinalSsp6Figures/10_hamburger_on_sling_150_to_250_aas_ssp6_hits/5_hamburger_on_gffs_in_2_T6SS_colouring_new_proteins_hit_dir/ssp6-alignment/smaller_figure_ssp6_sequences_aligned.fasta.treefile")
+small_hamburger_ssp6_tree <- read.tree(file="../data/5_hamburger_selected_ssp6_hits.fasta.tree")
 t3 <- ggtree(small_hamburger_ssp6_tree)  %<+% tip_labels + geom_text2(aes(subset = !isTip, label=label),size = 3, nudge_x = -0.18, nudge_y = 0.15) + geom_tiplab(aes(label=label2),size=4,hjust=-0.02) + geom_rootedge(0.2)#+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
 t4 <- t3 %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) + scale_fill_manual(values=c(col_vector)) + theme(legend.position = "none")
 t4
