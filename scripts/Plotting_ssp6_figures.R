@@ -90,9 +90,9 @@ cols <- c("Yersinia" = "#4F2F4F",
           "6" = "#ff0000")
 
 ####load in data
-results <- read.csv(file = "../data/results.csv", comment.char = "", header = F, stringsAsFactors = F, quote="")
-metadata <- read.csv(file="../data/NCBI_complete_genomes_only_published_strains_metadata.csv", comment.char = "", header = T, stringsAsFactors = F, quote="")
-lengths <- read.csv(file="../data/lengths_formatted.csv",comment.char = "", header = F, stringsAsFactors = F, quote="")
+results <- read.csv(file = "../results/results.csv", comment.char = "", header = F, stringsAsFactors = F, quote="")
+metadata <- read.csv(file="../results/NCBI_complete_genomes_only_published_strains_metadata.csv", comment.char = "", header = T, stringsAsFactors = F, quote="")
+lengths <- read.csv(file="../results/lengths_formatted.csv",comment.char = "", header = F, stringsAsFactors = F, quote="")
 #metadata$Short.species <- str_replace_all(metadata$Short.species, " ", "_")
 metadata4later <- metadata
 metadata4later$File <- str_replace_all(metadata4later$File ,'.gbff', '')
@@ -216,7 +216,7 @@ ggplot(data = complete_2, aes(V7,V10, colour = Short.species, alpha = 0.1)) +
 
 complete_2$file_prefix <- str_replace_all(files$File, ".gbff", "")
 
-T6SS_operons <- read.csv("../data/strain_statistics.csv",comment.char = "", header = T, stringsAsFactors = F, quote="")
+T6SS_operons <- read.csv("../results/T6SS_occurences.csv",comment.char = "", header = T, stringsAsFactors = F, quote="")
 complete_with_T6SS <- merge(complete_2,T6SS_operons,by.x="file_prefix",by.y="strain")
 least_1_T6SS <- subset.data.frame(complete_with_T6SS, number_of_operons >= 1)
 no_T6SS <- subset.data.frame(complete_with_T6SS, number_of_operons == 0)
@@ -297,7 +297,7 @@ write.csv(headers_for_itol,file="headers_for_itol.csv",quote = F,row.names = F)
 
 
 ### hamburger_stats:
-hamburger_data <- read.csv("../data/1_ssp6_hamburger_10k_up_and_down_operon_stats.csv",
+hamburger_data <- read.csv("../results/hamburger_1_ssp6_search_plus_minus_10kb.csv",
          quote = "",
          comment.char = "",
          stringsAsFactors = F,
@@ -313,8 +313,8 @@ merged_for_hamburger$number_for_name <- as.data.frame(matrix(unlist(noquote(str_
 merged_for_hamburger$new_name<- with(merged_for_hamburger, paste0(Short.species, sep=" ", Strain, sep=" ", number_for_name))
 
 ### ssp6 hmmer score for each operon - data from hamburger step 5 on each 10k fragment:
-hmmer_step_5_ssp6_data <- read.csv("../data/5_hamburger_hmmer_scores.csv",header=T, quote = "", comment.char = "",stringsAsFactors = F)
-hmmer_ssp6_data_pre <-read.csv("../data/5_hamburger_hmmer_scores.csv", header=T, comment.char = "", stringsAsFactors = F, quote="")
+hmmer_step_5_ssp6_data <- read.csv("../results/hamburger_2_hmmer_scores.csv",header=T, quote = "", comment.char = "",stringsAsFactors = F)
+hmmer_ssp6_data_pre <-read.csv("../results/hamburger_2_hmmer_scores.csv", header=T, comment.char = "", stringsAsFactors = F, quote="")
 row.names(hmmer_ssp6_data_pre) <- hmmer_ssp6_data_pre$hmmer
 hmmer_ssp6_data <- subset.data.frame(hmmer_ssp6_data_pre, select=c("score"))
 colnames(hmmer_ssp6_data) <- "Hmmer score"
@@ -380,7 +380,7 @@ row.names(ssp6_tree_data) <- merged_for_hamburger$operon_name
 
 ### sp6_tree from hamburger:
 
-hamburger_ssp6_tree <- read.tree(file="../data/5_hamburger_ssp6_hits.fasta.treefile")
+hamburger_ssp6_tree <- read.tree(file="../results/hamburger_2_ssp6_hits.fasta.treefile")
 tip_labels = data.frame(label=merged_for_hamburger$operon_name, label2 = merged_for_hamburger$new_name)
 t1 <- ggtree(hamburger_ssp6_tree)  %<+% tip_labels + geom_rootedge(0.2) + geom_text2(aes(subset = !isTip, label=label),size = 2, nudge_x = -0.04, nudge_y = 0.45) + geom_tiplab(aes(label=label2),size=2.8) #+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
 t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, colnames_offset_y = -1) +
@@ -392,8 +392,8 @@ t8 <- t1 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 1, width = 0.2, co
 
 ### load in gggenes
 
-genes <- read.csv(file="../data/5_hamburger_same_direction_gggenes_input.csv", header = T, comment.char = "", quote = "")
-genes2 <- read.csv(file="../data/5_hamburger_gggenes_input.csv", header = T, comment.char = "", quote = "")
+genes <- read.csv(file="../results/hamburger_2_same_direction_gggenes_input.csv", header = T, comment.char = "", quote = "")
+genes2 <- read.csv(file="../results/hamburger_2_gggenes_input.csv", header = T, comment.char = "", quote = "")
 
 new_data <- genes[,c(2,1,3:7)]
 test_data <- genes2[,c(2,1,3:7)]
@@ -422,7 +422,7 @@ ggplot2::ggplot(genes, ggplot2::aes(xmin = start, xmax = end,y = operon, fill = 
 
 ###select small number of isolates to look at
 ###load in tree of ssp6 from subset of isolates
-small_hamburger_ssp6_tree <- read.tree(file="../data/5_hamburger_selected_ssp6_hits.fasta.treefile")
+small_hamburger_ssp6_tree <- read.tree(file="../results/hamburger_2_selected_ssp6_hits.fasta.treefile")
 t3 <- ggtree(small_hamburger_ssp6_tree)  %<+% tip_labels + geom_text2(aes(subset = !isTip, label=label),size = 3, nudge_x = -0.18, nudge_y = 0.15) + geom_tiplab(aes(label=label2),size=4,hjust=-0.02) + geom_rootedge(0.2)#+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
 t4 <- t3 %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) + scale_fill_manual(values=c(col_vector)) + theme(legend.position = "none")
 t4
