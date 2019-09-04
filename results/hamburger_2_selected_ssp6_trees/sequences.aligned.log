@@ -1,0 +1,122 @@
+IQ-TREE version 1.3.11.1 for Linux 64-bit built Feb  1 2016
+Copyright (c) 2011-2015 Nguyen Lam Tung, Olga Chernomor, Arndt von Haeseler and Bui Quang Minh.
+
+Host:    djwilliams-HP-EliteBook-830-G5 (AVX2, FMA3, 15 GB RAM)
+Command: iqtree -s sequences.aligned -bb 1000
+Seed:    151949 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Wed Jul 31 11:31:44 2019
+Kernel:  AVX
+
+NOTE: Consider using the multicore version because your CPU has 8 cores!
+
+Reading alignment file sequences.aligned ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 13 sequences with 257 columns and 256 patterns (201 informative sites)
+                                              Gap/Ambiguity  Composition  p-value
+   1  GCF_002288545.1_ASM228854v1_genomic_operon_1   10.12%    failed      3.80%
+   2  GCF_000834395.1_ASM83439v1_genomic_operon_3    10.51%    failed      2.34%
+   3  GCF_000148935.1_ASM14893v1_genomic_operon_1    17.12%    passed     76.22%
+   4  GCF_000834395.1_ASM83439v1_genomic_operon_2    17.12%    passed     88.81%
+   5  GCF_000255535.1_ASM25553v1_genomic_operon_2    12.06%    passed     48.89%
+   6  GCF_000255535.1_ASM25553v1_genomic_operon_1    15.18%    passed     65.78%
+   7  GCF_001855315.1_ASM185531v1_genomic_operon_1   12.84%    passed     83.65%
+   8  GCF_000239975.1_ASM23997v1_genomic_operon_1    14.01%    passed     52.97%
+   9  GCF_002906435.1_ASM290643v1_genomic_operon_1   17.12%    passed     72.92%
+  10  GCF_000261045.2_ASM26104v2_genomic_operon_1    21.01%    passed     62.72%
+  11  GCF_000834395.1_ASM83439v1_genomic_operon_1    16.73%    passed     79.22%
+  12  GCF_000513215.1_DB11_genomic_operon_2          16.34%    passed     91.72%
+  13  GCF_000513215.1_DB11_genomic_operon_1          16.73%    passed     90.80%
+****  TOTAL                                          15.15%  2 sequences failed composition chi2 test (p-value<5%; df=19)
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.001 seconds
+Generating 1000 samples for ultrafast bootstrap...
+Max candidate trees (tau): 1300
+WARNING: Default model may be under-fitting. Use option '-m TEST' to select best-fit model.
+
+NOTE: 1 MB RAM is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -6146.162
+Optimal log-likelihood: -6112.057
+Parameters optimization took 1 rounds (0.014 sec)
+
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Computing ML distances based on estimated model parameters... 0.010 sec
+Computing BIONJ tree...
+0.000 seconds
+Log-likelihood of BIONJ tree: -6102.209
+Generating 98 parsimony trees... 0.073 seconds 11 distinct starting trees
+Computing log-likelihood of 11 initial trees ... 0.041 seconds
+Optimizing top 11 initial trees with NNI...
+Iteration 1 / LogL: -6098.799 / Time: 0h:0m:0s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -6098.719
+Iteration 2 / LogL: -6101.795 / Time: 0h:0m:0s
+Iteration 3 / LogL: -6098.740 / Time: 0h:0m:0s
+Iteration 4 / LogL: -6102.006 / Time: 0h:0m:0s
+Iteration 5 / LogL: -6101.407 / Time: 0h:0m:0s
+Iteration 6 / LogL: -6101.430 / Time: 0h:0m:0s
+Iteration 7 / LogL: -6101.534 / Time: 0h:0m:0s
+Iteration 8 / LogL: -6101.779 / Time: 0h:0m:0s
+Iteration 9 / LogL: -6102.272 / Time: 0h:0m:0s
+Iteration 10 / LogL: -6104.329 / Time: 0h:0m:0s
+Iteration 11 / LogL: -6101.801 / Time: 0h:0m:0s
+Average CPU time for 1 NNI search: 0.028
+Finish initializing candidate tree set. Number of distinct locally optimal trees: 5
+Current best tree score: -6098.719 / CPU time: 0.420
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 20 / LogL: -6098.740 / Time: 0h:0m:0s (0h:0m:3s left)
+Iteration 30 / LogL: -6099.794 / Time: 0h:0m:1s (0h:0m:2s left)
+Iteration 40 / LogL: -6101.579 / Time: 0h:0m:1s (0h:0m:2s left)
+Iteration 50 / LogL: -6103.566 / Time: 0h:0m:1s (0h:0m:1s left)
+NOTE: 1515 bootstrap candidate trees evaluated (logl-cutoff: -6108.819)
+Iteration 60 / LogL: -6098.741 / Time: 0h:0m:2s (0h:0m:1s left)
+Iteration 70 / LogL: -6098.776 / Time: 0h:0m:2s (0h:0m:1s left)
+Iteration 80 / LogL: -6098.752 / Time: 0h:0m:3s (0h:0m:0s left)
+Iteration 90 / LogL: -6098.764 / Time: 0h:0m:3s (0h:0m:0s left)
+Iteration 100 / LogL: -6101.865 / Time: 0h:0m:3s (0h:0m:0s left)
+NOTE: 3824 bootstrap candidate trees evaluated (logl-cutoff: -6151.923)
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 1.000
+TREE SEARCH COMPLETED AFTER 101 ITERATIONS / Time: 0h:0m:3s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -6098.719
+Optimal log-likelihood: -6098.717
+Parameters optimization took 1 rounds (0.004 sec)
+
+BEST SCORE FOUND : -6098.717
+Creating bootstrap support values...
+Split supports printed to NEXUS file sequences.aligned.splits.nex
+Total tree length: 9.368
+
+Total number of iterations: 101
+CPU time used for tree search: 3.765 sec (0h:0m:3s)
+Wall-clock time used for tree search: 3.769 sec (0h:0m:3s)
+Total CPU time used: 3.838 sec (0h:0m:3s)
+Total wall-clock time used: 3.847 sec (0h:0m:3s)
+
+Computing bootstrap consensus tree...
+Reading input file sequences.aligned.splits.nex...
+13 taxa and 63 splits.
+Consensus tree written to sequences.aligned.contree
+Log-likelihood of consensus tree: -6099.600
+Reading input trees file sequences.aligned.contree
+
+Analysis results written to: 
+  IQ-TREE report:                sequences.aligned.iqtree
+  Maximum-likelihood tree:       sequences.aligned.treefile
+  Likelihood distances:          sequences.aligned.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          sequences.aligned.splits.nex
+  Consensus tree:                sequences.aligned.contree
+  Screen log file:               sequences.aligned.log
+
+Date and Time: Wed Jul 31 11:31:48 2019

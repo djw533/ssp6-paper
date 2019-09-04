@@ -422,16 +422,28 @@ ggplot2::ggplot(genes, ggplot2::aes(xmin = start, xmax = end,y = operon, fill = 
 
 ###select small number of isolates to look at
 ###load in tree of ssp6 from subset of isolates
-small_hamburger_ssp6_tree <- read.tree(file="../results/hamburger_2_selected_ssp6_hits.fasta.treefile")
+small_hamburger_ssp6_tree <- read.tree(file="../results/re_do/sequences.aligned.treefile")
+
+##test
+ggtree(small_hamburger_ssp6_tree)  %<+% tip_labels + geom_text2(aes(label=node),size = 3, nudge_x = -0.18, nudge_y = 0.15) + geom_tiplab(aes(label=label2),size=4,hjust=-0.02) + geom_rootedge(0.2) + xlim(-0.3,5)
+
+### flip tree
+flipped_tree <- flip(ggtree(small_hamburger_ssp6_tree) , 13, 24) %>% flip(11, 12) %>% flip(10, 9) %>% flip(7, 19) 
+
+flip_test <- flipped_tree %<+% tip_labels + geom_text2(aes(subset = !isTip, label = label),size = 3, nudge_x = -0.18, nudge_y = 0.15) + geom_tiplab(aes(label=label2),size=4,hjust=-0.02) + geom_rootedge(0.2) 
+
+### back to normal_script
+
 t3 <- ggtree(small_hamburger_ssp6_tree)  %<+% tip_labels + geom_text2(aes(subset = !isTip, label=label),size = 3, nudge_x = -0.18, nudge_y = 0.15) + geom_tiplab(aes(label=label2),size=4,hjust=-0.02) + geom_rootedge(0.2)#+ geom_tiplab(size=2) #+ xlim(0,10) #+ xlim_tree(16)
-t4 <- t3 %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) + scale_fill_manual(values=c(col_vector)) + theme(legend.position = "none")
+### put in in the flipped tree
+t4 <- flip_test %>% gheatmap(ssp6_tree_data, color = NULL, offset = 5, width = 0.5, colnames_offset_y = -1) + scale_fill_manual(values=c(col_vector)) + theme(legend.position = "none")
 t4
-t9 <- t3 %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 2, width = 0.2, colnames_offset_y = -1) +
+t9 <- flip_test %>% gheatmap(hmmer_ssp6_data, color = NULL, offset = 2, width = 0.2, colnames_offset_y = -1) +
   scale_fill_gradient(low="#ffffff", high="#2980B9") +
   theme(legend.title=element_text()) +
   labs(fill="Hmmer score") +
   geom_treescale(width = 2, offset = -0.4) +
-  ggsave("selected_hits_with_hmmer_score.png",dpi=300, width=16.53,height=11.69, units=c("in")) #+ theme(legend.position = "none")
+  ggsave("selected_hits_with_hmmer_score.pdf",dpi=300, width=16.53,height=11.69, units=c("in")) #+ theme(legend.position = "none")
 
 ### draw smaller set with genes alongside
 
@@ -440,7 +452,7 @@ f1 <- facet_plot(t4, panel='Operons',
            data=new_data, geom=geom_gene_arrow, arrow_body_height = grid::unit(3, "mm"), arrowhead_height = grid::unit(4, "mm"), arrowhead_width = grid::unit(2,"mm")) +
   scale_fill_manual(values=c(new_cols)) +
   geom_treescale(width = 2, offset = -0.4) +
-  ggsave("smaller_set_ssp6with_operons.png",dpi=300, width=16.53,height=9, units=c("in"))
+  ggsave("smaller_set_ssp6with_operons.pdf",dpi=300, width=16.53,height=9, units=c("in"))
 
 
 ### legends for the species and genes separately:
